@@ -56,7 +56,7 @@ static int _get_socket_error_code_reason(char *str, int sockfd)
     int err;
 
     err = getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &result, &optlen);
-    if (err == -1) {
+   if (err == -1) {
         ESP_LOGE(TAG, "%s, getsockopt failed: ret=%d", str, err);
         return -1;
     }
@@ -126,7 +126,7 @@ static esp_err_t _tcp_read(audio_element_handle_t self, char *buffer, int len, T
 static esp_err_t _tcp_write(audio_element_handle_t self, char *buffer, int len, TickType_t ticks_to_wait, void *context)
 {
     tcp_stream_t *tcp = (tcp_stream_t *)audio_element_getdata(self);
-    audio_element_info_t info;
+    audio_element_info_t info = { 0 };
     int wlen = esp_transport_write(tcp->t, buffer, len, tcp->timeout_ms);
     if (wlen < 0) {
         _get_socket_error_code_reason("TCP write", tcp->sock);

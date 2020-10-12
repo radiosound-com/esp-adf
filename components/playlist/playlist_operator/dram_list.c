@@ -87,7 +87,7 @@ esp_err_t dram_list_save(playlist_operator_handle_t handle, const char *url)
         return ESP_FAIL;
     });
 
-    strncpy(list_node->url_name, url, strlen(url));
+    memcpy(list_node->url_name, url, strlen(url));
     TAILQ_INSERT_TAIL(&playlist->url_info_list, list_node, entries);
 
     if (NULL == playlist->cur_node) {
