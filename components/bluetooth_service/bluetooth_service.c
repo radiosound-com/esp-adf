@@ -425,7 +425,9 @@ esp_err_t bluetooth_service_start(bluetooth_service_cfg_t *config)
     g_bt_service = audio_calloc(1, sizeof(bluetooth_service_t));
     AUDIO_MEM_CHECK(TAG, g_bt_service, return ESP_ERR_NO_MEM);
 
+#ifndef CONFIG_BTDM_CTRL_MODE_BTDM
     ESP_ERROR_CHECK(esp_bt_controller_mem_release(ESP_BT_MODE_BLE));
+#endif
 
     esp_bt_controller_config_t bt_cfg = BT_CONTROLLER_INIT_CONFIG_DEFAULT();
     if (esp_bt_controller_init(&bt_cfg) != ESP_OK) {
@@ -433,10 +435,17 @@ esp_err_t bluetooth_service_start(bluetooth_service_cfg_t *config)
         return ESP_FAIL;
     }
 
+#ifdef CONFIG_BTDM_CTRL_MODE_BTDM
+    if (esp_bt_controller_enable(ESP_BT_MODE_BTDM) != ESP_OK) {
+        AUDIO_ERROR(TAG, "enable controller failed");
+        return ESP_FAIL;
+    }
+#else
     if (esp_bt_controller_enable(ESP_BT_MODE_CLASSIC_BT) != ESP_OK) {
         AUDIO_ERROR(TAG, "enable controller failed");
         return ESP_FAIL;
     }
+#endif
 
     if (esp_bluedroid_init() != ESP_OK) {
         AUDIO_ERROR(TAG, "initialize bluedroid failed");
