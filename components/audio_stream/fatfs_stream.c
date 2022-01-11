@@ -94,18 +94,13 @@ static esp_err_t _fatfs_open(audio_element_handle_t self)
     fatfs_stream_t *fatfs = (fatfs_stream_t *)audio_element_getdata(self);
 
     audio_element_info_t info;
-    char *uri = audio_element_get_uri(self);
-    if (uri == NULL) {
+    char *path = audio_element_get_uri(self);
+    if (path == NULL) {
         ESP_LOGE(TAG, "Error, uri is not set");
         return ESP_FAIL;
     }
-    ESP_LOGD(TAG, "_fatfs_open, uri:%s", uri);
-    char *path = strstr(uri, "/sdcard");
+    ESP_LOGD(TAG, "_fatfs_open, uri:%s", path);
     audio_element_getinfo(self, &info);
-    if (path == NULL) {
-        ESP_LOGE(TAG, "Error, need file path to open");
-        return ESP_FAIL;
-    }
     if (fatfs->is_open) {
         ESP_LOGE(TAG, "already opened");
         return ESP_FAIL;
