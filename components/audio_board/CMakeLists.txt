@@ -23,6 +23,15 @@ set(COMPONENT_SRCS
 )
 endif()
 
+if (CONFIG_ESP_LYRAT_V4_3_BOARD_NO_AUDIO_IN)
+message(STATUS "Current board name is " CONFIG_ESP_LYRAT_V4_3_BOARD_NO_AUDIO_IN)
+list(APPEND COMPONENT_ADD_INCLUDEDIRS ./lyrat_v4_3_no_audio_in)
+set(COMPONENT_SRCS
+./lyrat_v4_3_no_audio_in/board.c
+./lyrat_v4_3_no_audio_in/board_pins_config.c
+)
+endif()
+
 if (CONFIG_ESP_LYRAT_MINI_V1_1_BOARD)
 message(STATUS "Current board name is " CONFIG_ESP_LYRAT_MINI_V1_1_BOARD)
 list(APPEND COMPONENT_ADD_INCLUDEDIRS ./lyrat_mini_v1_1)

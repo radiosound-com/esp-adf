@@ -9,6 +9,8 @@ config AUDIO_BOARD_CUSTOM
     bool "Custom audio board"
 config ESP_LYRAT_V4_3_BOARD
     bool "ESP32-Lyrat V4.3"
+config ESP_LYRAT_V4_3_BOARD_NO_AUDIO_IN
+    bool "ESP32-Lyrat V4.3 without audio input (frees ASDOUT pin)"
 config ESP_LYRAT_V4_2_BOARD
     bool "ESP32-Lyrat V4.2"
 config ESP_LYRATD_MSC_V2_1_BOARD
