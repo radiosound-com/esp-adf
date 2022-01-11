@@ -34,7 +34,7 @@
 #include "es8388.h"
 #include "board.h"
 
-#ifdef CONFIG_ESP_LYRAT_V4_3_BOARD
+#if defined(CONFIG_ESP_LYRAT_V4_3_BOARD) || defined(CONFIG_ESP_LYRAT_V4_3_BOARD_NO_AUDIO_IN)
 
 #define HP_DELAY_TIME_MS       1000
 
