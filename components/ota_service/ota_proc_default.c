@@ -94,8 +94,8 @@ static ota_service_err_reason_t ota_app_partition_prepare(void **handle, ota_nod
         context->finish = esp_fs_ota_finish;
 
         esp_fs_ota_config_t ota_config = {
-            .path = node->uri,
-            .buffer_size = 5 * 1024,
+            .path = node->uri + 7,
+            .buffer_size = 2 * 1024,
         };
         esp_err_t err = esp_fs_ota_begin(&ota_config, &context->ota_handle);
         if (err != ESP_OK) {
@@ -202,16 +202,17 @@ static ota_service_err_reason_t ota_data_partition_prepare(void **handle, ota_no
         fs_cfg.type = AUDIO_STREAM_READER;
 
         context->r_stream = fatfs_stream_init(&fs_cfg);
+        audio_element_set_uri(context->r_stream, node->uri + 7);
     } else if (strstr(node->uri, "https://") || strstr(node->uri, "http://")) {
         http_stream_cfg_t http_cfg = HTTP_STREAM_CFG_DEFAULT();
         http_cfg.type = AUDIO_STREAM_READER;
 
         context->r_stream = http_stream_init(&http_cfg);
+        audio_element_set_uri(context->r_stream, node->uri);
     } else {
         ESP_LOGE(TAG, "not support uri");
         return OTA_SERV_ERR_REASON_URL_PARSE_FAIL;
     }
-    audio_element_set_uri(context->r_stream, node->uri);
     if (audio_element_process_init(context->r_stream) != ESP_OK) {
         ESP_LOGE(TAG, "reader stream init failed");
         return OTA_SERV_ERR_REASON_STREAM_INIT_FAIL;
