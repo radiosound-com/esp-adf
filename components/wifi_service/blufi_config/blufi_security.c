@@ -45,8 +45,10 @@
 
 #ifdef CONFIG_IDF_TARGET_ESP32
 #include "esp32/rom/crc.h"
-#else
-#include "esp32s2beta/rom/crc.h"
+#elif defined CONFIG_IDF_TARGET_ESP32S2
+#include "esp32s2/rom/crc.h"
+#elif defined CONFIG_IDF_TARGET_ESP32S3
+#include "esp32s3/rom/crc.h"
 #endif // CONFIG_IDF_TARGET_ESP32
 
 #else
