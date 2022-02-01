@@ -142,17 +142,9 @@ static int i2s_stream_clear_dma_buffer(audio_element_handle_t self)
     return ESP_OK;
 }
 
-static esp_err_t _i2s_set_clk(i2s_port_t i2s_num, uint32_t rate, uint32_t bits_cfg, int ch)
+static esp_err_t _i2s_set_clk(i2s_port_t i2s_num, uint32_t rate, uint32_t bits_cfg, i2s_channel_t ch)
 {
-    i2s_channel_t channel;
-    if (ch == 1) {
-        channel = I2S_CHANNEL_MONO;
-    } else if (ch == 2) {
-        channel = I2S_CHANNEL_STEREO;
-    } else {
-        return ESP_FAIL;
-    }
-    return i2s_set_clk(i2s_num, rate, bits_cfg, channel);
+    return i2s_set_clk(i2s_num, rate, bits_cfg, ch);
 }
 
 static esp_err_t _i2s_open(audio_element_handle_t self)
@@ -383,7 +375,7 @@ audio_element_handle_t i2s_stream_init(i2s_stream_cfg_t *config)
     audio_element_setdata(el, i2s);
 
     audio_element_set_music_info(el, config->i2s_config.sample_rate,
-                                 config->i2s_config.channel_format < I2S_CHANNEL_FMT_ONLY_RIGHT ? 2 : 1,
+                                 config->i2s_config.total_chan > 0 ? config->i2s_config.total_chan : config->i2s_config.channel_format < I2S_CHANNEL_FMT_ONLY_RIGHT ? 2 : 1,
                                  config->i2s_config.bits_per_sample);
 #if SOC_I2S_SUPPORTS_ADC_DAC
     if ((config->i2s_config.mode & I2S_MODE_DAC_BUILT_IN) != 0) {
