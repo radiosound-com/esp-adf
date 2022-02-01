@@ -35,6 +35,7 @@
 
 #include "soc/ledc_struct.h"
 #include "soc/ledc_reg.h"
+#include "soc/timer_group_struct.h"
 #include "pwm_stream.h"
 
 static const char *TAG = "PWM_STREAM";
