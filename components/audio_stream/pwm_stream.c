@@ -234,7 +234,11 @@ static void IRAM_ATTR timer_group_isr(void *para)
 #ifdef CONFIG_IDF_TARGET_ESP32S2
     handle->timg_dev->hw_timer[handle->config.timer_num].config.tx_alarm_en = TIMER_ALARM_EN;
 #elif CONFIG_IDF_TARGET_ESP32
+#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
+    handle->timg_dev->hw_timer[handle->config.timer_num].config.tx_alarm_en = TIMER_ALARM_EN;
+#else
     handle->timg_dev->hw_timer[handle->config.timer_num].config.alarm_en = TIMER_ALARM_EN;
+#endif
 #elif CONFIG_IDF_TARGET_ESP32S3
     handle->timg_dev->hw_timer[handle->config.timer_num].config.tn_alarm_en = TIMER_ALARM_EN;
 #endif
@@ -440,7 +444,11 @@ esp_err_t audio_pwm_set_sample_rate(int rate)
 #ifdef CONFIG_IDF_TARGET_ESP32S2
     div = (uint16_t)handle->timg_dev->hw_timer[handle->config.timer_num].config.tx_divider;
 #elif CONFIG_IDF_TARGET_ESP32
+#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
+    div = (uint16_t)handle->timg_dev->hw_timer[handle->config.timer_num].config.tx_divider;
+#else
     div = (uint16_t)handle->timg_dev->hw_timer[handle->config.timer_num].config.divider;
+#endif
 #elif CONFIG_IDF_TARGET_ESP32S3
     div = (uint16_t)handle->timg_dev->hw_timer[handle->config.timer_num].config.tn_divider;
 #endif
