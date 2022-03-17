@@ -32,6 +32,8 @@
 #include "audio_mem.h"
 #include "sdkconfig.h"
 
+#include "esp_debug_helpers.h"
+
 #if __has_include("esp_idf_version.h")
 #include "esp_idf_version.h"
 #else
@@ -484,27 +486,36 @@ esp_err_t bluetooth_service_start(bluetooth_service_cfg_t *config)
     g_bt_service = audio_calloc(1, sizeof(bluetooth_service_t));
     AUDIO_MEM_CHECK(TAG, g_bt_service, return ESP_ERR_NO_MEM);
 
-    ESP_ERROR_CHECK(esp_bt_controller_mem_release(ESP_BT_MODE_BLE));
+    //ESP_ERROR_CHECK(esp_bt_controller_mem_release(ESP_BT_MODE_BLE));
 
     esp_bt_controller_config_t bt_cfg = BT_CONTROLLER_INIT_CONFIG_DEFAULT();
-    if (esp_bt_controller_init(&bt_cfg) != ESP_OK) {
-        AUDIO_ERROR(TAG, "initialize controller failed");
-        return ESP_FAIL;
+    esp_err_t ret;
+    ret = esp_bt_controller_init(&bt_cfg);
+    if (ret == ESP_ERR_INVALID_STATE)
+    {
+        ESP_LOGE(TAG, "%s initialize controller failed: %s\nThis likely indicates that the BT controller was initialized elsewhere.", __func__, esp_err_to_name(ret));
     }
-
-    if (esp_bt_controller_enable(ESP_BT_MODE_BTDM) != ESP_OK) {
-        AUDIO_ERROR(TAG, "enable controller failed");
-        return ESP_FAIL;
-    }
-
-    if (esp_bluedroid_init() != ESP_OK) {
-        AUDIO_ERROR(TAG, "initialize bluedroid failed");
-        return ESP_FAIL;
-    }
-
-    if (esp_bluedroid_enable() != ESP_OK) {
-        AUDIO_ERROR(TAG, "enable bluedroid failed");
-        return ESP_FAIL;
+    else
+    {
+        if (ret) {
+            ESP_LOGE(TAG, "%s initialize controller failed: %s\n", __func__, esp_err_to_name(ret));
+            return ESP_FAIL;
+        }
+        ret = esp_bt_controller_enable(ESP_BT_MODE_BTDM);
+        if (ret) {
+            ESP_LOGE(TAG, "%s enable controller failed: %s\n", __func__, esp_err_to_name(ret));
+            return ESP_FAIL;
+        }
+        ret = esp_bluedroid_init();
+        if (ret) {
+            ESP_LOGE(TAG, "%s init bluetooth failed: %s\n", __func__, esp_err_to_name(ret));
+            return ESP_FAIL;
+        }
+        ret = esp_bluedroid_enable();
+        if (ret) {
+            ESP_LOGE(TAG, "%s enable bluetooth failed: %s\n", __func__, esp_err_to_name(ret));
+            return ESP_FAIL;
+        }
     }
 
     if (config->device_name) {
