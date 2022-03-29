@@ -40,6 +40,7 @@
 #define ESP_IDF_VERSION_VAL(major, minor, patch) 1
 #endif
 
+//#define CONFIG_BT_ENABLED true
 #if CONFIG_BT_ENABLED
 #include "esp_a2dp_api.h"
 #include "esp_avrc_api.h"
@@ -47,6 +48,10 @@
 #include "esp_bt_device.h"
 #include "esp_bt_main.h"
 #include "esp_gap_bt_api.h"
+
+// From a2dp sink example code
+#include "bt_app_av.h"
+#include "bt_app_core.h"
 
 #include "bluetooth_service.h"
 #include "bt_keycontrol.h"
@@ -518,6 +523,12 @@ esp_err_t bluetooth_service_start(bluetooth_service_cfg_t *config)
         }
     }
 
+    /* create application task */
+    bt_app_task_start_up();
+
+    /* Bluetooth device name, connection mode and profile set up */
+    //bt_app_work_dispatch(bt_av_hdl_stack_evt, BT_APP_EVT_STACK_UP, NULL, 0, NULL);
+
     if (config->device_name) {
         esp_bt_dev_set_device_name(config->device_name);
     } else {
@@ -530,6 +541,13 @@ esp_err_t bluetooth_service_start(bluetooth_service_cfg_t *config)
 
     esp_avrc_ct_init();
     esp_avrc_ct_register_callback(bt_avrc_ct_cb);
+
+    /* initialize AVRCP target */
+    assert (esp_avrc_tg_init() == ESP_OK);
+    esp_avrc_tg_register_callback(bt_app_rc_tg_cb);
+    esp_avrc_rn_evt_cap_mask_t evt_set = {0};
+    esp_avrc_rn_evt_bit_mask_operation(ESP_AVRC_BIT_MASK_OP_SET, &evt_set, ESP_AVRC_RN_VOLUME_CHANGE);
+    assert(esp_avrc_tg_set_rn_evt_cap(&evt_set) == ESP_OK);
 
     if (config->mode == BLUETOOTH_A2DP_SINK) {
         esp_a2d_sink_init();
