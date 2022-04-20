@@ -28,6 +28,7 @@
 #include "board.h"
 #include "audio_error.h"
 #include "audio_mem.h"
+#include "soc/io_mux_reg.h"
 
 static const char *TAG = "LYRAT_V4_3";
 
