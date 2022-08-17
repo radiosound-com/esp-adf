@@ -223,6 +223,19 @@ static int _i2s_read(audio_element_handle_t self, char *buffer, int len, TickTyp
             i2s_mono_fix(info.bits, (uint8_t *)buffer, bytes_read);
         }
 #endif
+        static BaseType_t ticks_start = 0;
+        static int data_counter = 0;
+        data_counter += bytes_read;
+        BaseType_t now = xTaskGetTickCount();
+        BaseType_t diff = now - ticks_start;
+        // will overflow at some point (in either 2.147 billion ticks or 4.294 billion ticks) and stop working. I hope we're not trying to sniff I2S for that long.
+        if (diff >= pdMS_TO_TICKS(1000))
+        {
+            ESP_LOGD(TAG, "rx %d bytes in %d ticks, here is the latest %d", data_counter, diff, bytes_read);
+            ESP_LOG_BUFFER_HEX_LEVEL(TAG, buffer, bytes_read, ESP_LOG_DEBUG);
+            ticks_start = now;
+            data_counter = 0;
+        }
     }
     return bytes_read;
 }
@@ -245,6 +258,18 @@ static int _i2s_write(audio_element_handle_t self, char *buffer, int len, TickTy
             i2s_dac_data_scale(info.bits, (uint8_t *)buffer, len);
         }
 #endif
+        static BaseType_t ticks_start = 0;
+        static int data_counter = 0;
+        data_counter += len;
+        BaseType_t now = xTaskGetTickCount();
+        BaseType_t diff = now - ticks_start;
+        if (diff >= pdMS_TO_TICKS(1000))
+        {
+            ESP_LOGD(TAG, "tx %d bytes in %d ticks, here is the latest %d", data_counter, diff, len);
+            ESP_LOG_BUFFER_HEX_LEVEL(TAG, buffer, len, ESP_LOG_DEBUG);
+            ticks_start = now;
+            data_counter = 0;
+        }
     }
     i2s_write(i2s->config.i2s_port, buffer, len, &bytes_written, ticks_to_wait);
     return bytes_written;
