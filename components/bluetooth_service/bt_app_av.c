@@ -7,6 +7,9 @@
    CONDITIONS OF ANY KIND, either express or implied.
 */
 
+#include "sdkconfig.h"
+
+#if CONFIG_BT_ENABLED
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -378,3 +381,5 @@ static void bt_av_hdl_avrc_tg_evt(uint16_t event, void *p_param)
         break;
     }
 }
+
+#endif // CONFIG_BT_ENABLED
