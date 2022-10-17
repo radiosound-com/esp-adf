@@ -14,8 +14,8 @@
 #include "driver/spi_master.h"
 #include "soc/gpio_struct.h"
 #include "driver/gpio.h"
-#include "mbedtls/net.h"
 #include "lwip/def.h"
+#include "mbedtls/compat-2.x.h"
 #include "board.h"
 #include "audio_idf_version.h"
 
@@ -91,7 +91,7 @@ void VprocHALcleanup(void)
 
 void Vproc_msDelay(unsigned short time)
 {
-    ets_delay_us(time * 1000);
+    esp_rom_delay_us(time * 1000);
 }
 
 /* VprocWait(): use this function to
@@ -102,7 +102,7 @@ void Vproc_msDelay(unsigned short time)
 */
 void VprocWait(unsigned long int time)
 {
-    ets_delay_us(time * 1000);
+    esp_rom_delay_us(time * 1000);
 }
 
 #define BIGENDIAN 1

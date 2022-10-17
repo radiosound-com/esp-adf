@@ -1,3 +1,4 @@
+#if 0 // this file needs to be updated
 /*
  * ESPRESSIF MIT License
  *
@@ -189,7 +190,7 @@ tone_partition_handle_t tone_partition_init(const char *partition_label, bool us
             goto error;
         }
     }
-    ESP_LOGI(TAG, "tone partition format %d, total %d", tone->header.format, tone->header.total_num);
+    ESP_LOGI(TAG, "tone partition format %ld, total %d", tone->header.format, tone->header.total_num);
     return (tone_partition_handle_t)tone;
 
 error:
@@ -205,3 +206,5 @@ esp_err_t tone_partition_deinit(tone_partition_handle_t handle)
     free(handle);
     return ESP_OK;
 }
+
+#endif

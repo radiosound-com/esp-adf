@@ -121,7 +121,7 @@ esp_err_t audio_sys_get_real_time_stats(void)
 
                 task_elapsed_time = end_array[j].ulRunTimeCounter - start_array[i].ulRunTimeCounter;
                 percentage_time = (task_elapsed_time * 100UL) / (total_elapsed_time * portNUM_PROCESSORS);
-                ESP_LOGI(TAG, "| %-17s | %-11d |%2d%%  | %-4u | %-9u | %-7s | %-8x | %s",
+                ESP_LOGI(TAG, "| %-17s | %-11ld |%2ld%%  | %-4u | %-9lu | %-7s | %-8x | %s",
                                 start_array[i].pcTaskName, task_elapsed_time, percentage_time, start_array[i].uxCurrentPriority,
                                 start_array[i].usStackHighWaterMark, task_state[(start_array[i].eCurrentState)],
                                 start_array[i].xCoreID, task_stack[esp_ptr_internal(pxTaskGetStackStart(start_array[i].xHandle))]);

@@ -229,7 +229,7 @@ void bt_hf_client_cb(esp_hf_client_cb_event_t event, esp_hf_client_cb_param_t *p
 
     switch (event) {
     case ESP_HF_CLIENT_CONNECTION_STATE_EVT:
-        ESP_LOGI(TAG, "--Connection state %s, peer feats 0x%x, chld_feats 0x%x",
+        ESP_LOGI(TAG, "--Connection state %s, peer feats 0x%lx, chld_feats 0x%lx",
                  c_connection_state_str[param->conn_stat.state],
                  param->conn_stat.peer_feat,
                  param->conn_stat.chld_feat);

@@ -21,6 +21,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
+#if 0 // this file needs to be updated
+
 #include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
@@ -695,3 +697,5 @@ esp_err_t pwm_stream_set_clk(audio_element_handle_t pwm_stream, int rate, int bi
     res |= audio_pwm_start();
     return res;
 }
+
+#endif

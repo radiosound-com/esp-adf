@@ -27,6 +27,7 @@
 
 #include "esp_err.h"
 #include "esp_image_format.h"
+#include "esp_app_desc.h"
 
 #ifdef __cplusplus
 extern "C" {

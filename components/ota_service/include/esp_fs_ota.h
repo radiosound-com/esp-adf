@@ -25,6 +25,7 @@
 #pragma once
 
 #include <bootloader_common.h>
+#include "esp_app_desc.h"
 
 #ifdef __cplusplus
 extern "C" {

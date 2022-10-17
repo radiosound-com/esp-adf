@@ -31,7 +31,7 @@
 #include "esp_core_dump.h"
 #include "esp_http_client.h"
 #include "esp_log.h"
-#include "esp_spi_flash.h"
+#include "esp_flash.h"
 #include "esp_system.h"
 
 #include "audio_error.h"
@@ -71,7 +71,7 @@ static bool coredump_read(uint8_t **des, size_t *len)
     }
     *des = audio_calloc(1, *len);
     AUDIO_MEM_CHECK(TAG, *des, return false);
-    if (spi_flash_read(addr, *des, *len) != ESP_OK) {
+    if (esp_flash_read(NULL, addr, *des, *len) != ESP_OK) {
         ESP_LOGE(TAG, "Core dump read ERROR");
         free(*des);
         *des = NULL;

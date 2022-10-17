@@ -24,12 +24,13 @@
 
 #include "sdkconfig.h"
 #include "audio_mem.h"
-#ifdef CONFIG_BLUEDROID_ENABLED
+#ifdef CONFIG_BT_BLE_BLUFI_ENABLE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "esp_log.h"
 #include "esp_system.h"
+#include "esp_random.h"
 
 #include "mbedtls/aes.h"
 #include "mbedtls/dhm.h"

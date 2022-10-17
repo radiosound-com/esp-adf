@@ -29,6 +29,8 @@
 #include "freertos/FreeRTOS.h"
 #include "aws_sig_v4_signing.h"
 
+#if 0 // this file needs to have fixes for using the destination buffer in arguments, the new gcc does not like it
+
 #define HASH_LENGHT (32)
 #define HASH_HEX_LENGTH (65)
 static const char *aws_algorithm = "AWS4-HMAC-SHA256";
@@ -93,7 +95,7 @@ char *aws_sig_v4_signing_header(aws_sig_v4_context_t *ctx, aws_sig_v4_config_t *
     char separate = config->signed_headers && strlen(config->signed_headers) > 0 ? ';' : 0;
     int canonical_request_len = snprintf(canonical_request,
                                          REMAIN_BUFFER(ctx),
-                                         "%s\n%s\n%s\n%shost:%s\nx-amz-date:%s\n\n%s%chost;x-amz-date\n%s",
+                                         "%s\n%s\n%s\n%shost:%s\nx-amz-date:%s\n\n%s%chost;x-amz-date\n%64s",
                                          config->method,
                                          config->path,
                                          config->query,
@@ -132,9 +134,10 @@ char *aws_sig_v4_signing_header(aws_sig_v4_context_t *ctx, aws_sig_v4_config_t *
     char *string_to_sign = GET_BUFFER(ctx);
     int string_to_sign_len = snprintf(string_to_sign,
                                       REMAIN_BUFFER(ctx),
-                                      "%s\n%s\n%s\n%s",
+                                      "%s\n%s\n%.*s\n%s",
                                       aws_algorithm,
                                       config->amz_date,
+                                      credential_scope_len,
                                       credential_scope,
                                       canonical_request_sha256);
     NEXT_BUFFER(ctx, string_to_sign_len + 1);
@@ -146,12 +149,16 @@ char *aws_sig_v4_signing_header(aws_sig_v4_context_t *ctx, aws_sig_v4_config_t *
     char *authorization_header = GET_BUFFER(ctx);
     snprintf(authorization_header,
              REMAIN_BUFFER(ctx),
-             "%s Credential=%s/%s, SignedHeaders=%s%chost;x-amz-date, Signature=%s",
+             "%s Credential=%s/%.*s, SignedHeaders=%s%chost;x-amz-date, Signature=%64s",
              aws_algorithm,
              config->access_key,
+             credential_scope_len,
              credential_scope,
              config->signed_headers,
              separate,
              signature);
     return authorization_header;
 }
+
+
+#endif

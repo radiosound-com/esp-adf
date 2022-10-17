@@ -22,6 +22,8 @@
  *
  */
 
+#if 0 // this file needs to be fixed for esp_netif instead of tcpip_adapter
+
 #include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -41,9 +43,9 @@
 #include "airkiss_config.h"
 #include "esp_wifi_setting.h"
 
-#if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(4, 4, 0))
-#include "tcpip_adapter_types.h"
-#endif
+//#if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(4, 4, 0))
+//#include "tcpip_adapter_types.h"
+//#endif
 
 #define AIRKISS_DEBUG_ON                0
 
@@ -574,3 +576,5 @@ esp_wifi_setting_handle_t airkiss_config_create(airkiss_config_info_t *info)
     esp_wifi_setting_register_function(air_setting_handle, airkiss_start, airkiss_stop, airkiss_teardown);
     return air_setting_handle;
 }
+
+#endif

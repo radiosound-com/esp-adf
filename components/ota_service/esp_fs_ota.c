@@ -106,7 +106,7 @@ esp_err_t esp_fs_ota_begin(esp_fs_ota_config_t *ota_config, esp_fs_ota_handle_t 
         err = ESP_FAIL;
         goto failure;
     }
-    ESP_LOGI(TAG, "Writing to partition subtype %d at offset 0x%x",
+    ESP_LOGI(TAG, "Writing to partition subtype %d at offset 0x%lx",
         fs_ota_handle->update_partition->subtype, fs_ota_handle->update_partition->address);
 
     const int alloc_size = (ota_config->buffer_size > DEFAULT_OTA_BUF_SIZE) ? ota_config->buffer_size : DEFAULT_OTA_BUF_SIZE;

@@ -270,11 +270,11 @@ static void filter_inquiry_scan_result(esp_bt_gap_cb_param_t *param)
         switch (p->type) {
             case ESP_BT_GAP_DEV_PROP_COD:
                 cod = *(uint32_t *)(p->val);
-                ESP_LOGI(TAG, "--Class of Device: 0x%x", cod);
+                ESP_LOGI(TAG, "--Class of Device: 0x%lx", cod);
                 break;
             case ESP_BT_GAP_DEV_PROP_RSSI:
                 rssi = *(int8_t *)(p->val);
-                ESP_LOGI(TAG, "--RSSI: %d", rssi);
+                ESP_LOGI(TAG, "--RSSI: %ld", rssi);
                 break;
             case ESP_BT_GAP_DEV_PROP_EIR:
                 eir = (uint8_t *)(p->val);
@@ -348,7 +348,7 @@ static void bt_avrc_ct_cb(esp_avrc_ct_cb_event_t event, esp_avrc_ct_cb_param_t *
                 break;
             }
         case ESP_AVRC_CT_REMOTE_FEATURES_EVT: {
-                ESP_LOGD(TAG, "AVRC remote features %x", rc->rmt_feats.feat_mask);
+                ESP_LOGD(TAG, "AVRC remote features %lx", rc->rmt_feats.feat_mask);
                 break;
             }
 

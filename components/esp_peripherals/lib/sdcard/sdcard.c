@@ -113,10 +113,10 @@ esp_err_t sdcard_mount(const char *base_path, periph_sdcard_mode_t mode)
     } else {
         ESP_LOGI(TAG, "Using SPI mode, base path=%s", base_path);
         sdmmc_host_t host = SDSPI_HOST_DEFAULT();
-        sdspi_slot_config_t slot_config = SDSPI_SLOT_CONFIG_DEFAULT();
-        slot_config.gpio_miso = PIN_NUM_MISO;
-        slot_config.gpio_mosi = PIN_NUM_MOSI;
-        slot_config.gpio_sck  = PIN_NUM_CLK;
+        sdspi_device_config_t slot_config = SDSPI_DEVICE_CONFIG_DEFAULT();
+        //slot_config.gpio_miso = PIN_NUM_MISO;
+        //slot_config.gpio_mosi = PIN_NUM_MOSI;
+        //slot_config.gpio_sck  = PIN_NUM_CLK;
         slot_config.gpio_cs   = PIN_NUM_CS;
 
         ret = esp_vfs_fat_sdmmc_mount(base_path, &host, &slot_config, &mount_config, &card);

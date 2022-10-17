@@ -358,7 +358,7 @@ esp_err_t a2dp_destroy()
 #if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(4, 0, 0))
 static void bt_avrc_volume_set_by_controller(int16_t volume)
 {
-    ESP_LOGI(TAG, "Volume is set by remote controller %d%%\n", (uint32_t)volume * 100 / 0x7f);
+    ESP_LOGI(TAG, "Volume is set by remote controller %d\n", volume);
     _lock_acquire(&s_aadp_handler.volume_lock);
     s_aadp_handler.volume = volume;
     _lock_release(&s_aadp_handler.volume_lock);
@@ -369,7 +369,7 @@ static void bt_avrc_volume_set_by_controller(int16_t volume)
 
 static void bt_avrc_volume_set_by_local(int16_t volume)
 {
-    ESP_LOGI(TAG, "Volume is set locally to: %d%%", volume );
+    ESP_LOGI(TAG, "Volume is set locally to: %d", volume );
     _lock_acquire(&s_aadp_handler.volume_lock);
     s_aadp_handler.volume = volume;
     _lock_release(&s_aadp_handler.volume_lock);
@@ -426,7 +426,7 @@ static void bt_avrc_ct_cb(esp_avrc_ct_cb_event_t event, esp_avrc_ct_cb_param_t *
                 break;
             }
         case ESP_AVRC_CT_REMOTE_FEATURES_EVT: {
-                ESP_LOGW(TAG, "AVRC ct remote features %x", rc->rmt_feats.feat_mask);
+                ESP_LOGW(TAG, "AVRC ct remote features %lx", rc->rmt_feats.feat_mask);
                 break;
             }
         default:
@@ -459,7 +459,7 @@ static void bt_avrc_tg_cb(esp_avrc_tg_cb_event_t event, esp_avrc_tg_cb_param_t *
         break;
     }
     case ESP_AVRC_TG_REGISTER_NOTIFICATION_EVT: {
-        ESP_LOGI(TAG, "AVRC register event notification: %d, param: 0x%x", rc->reg_ntf.event_id, rc->reg_ntf.event_parameter);
+        ESP_LOGI(TAG, "AVRC register event notification: %d, param: 0x%lx", rc->reg_ntf.event_id, rc->reg_ntf.event_parameter);
         if (rc->reg_ntf.event_id == ESP_AVRC_RN_VOLUME_CHANGE) {
             s_aadp_handler.volume_notify = true;
             esp_avrc_rn_param_t rn_param;
@@ -470,7 +470,7 @@ static void bt_avrc_tg_cb(esp_avrc_tg_cb_event_t event, esp_avrc_tg_cb_param_t *
         break;
     }
     case ESP_AVRC_TG_REMOTE_FEATURES_EVT: {
-        ESP_LOGW(TAG, "AVRC tg remote features %x, CT features %x", rc->rmt_feats.feat_mask, rc->rmt_feats.ct_feat_flag);
+        ESP_LOGW(TAG, "AVRC tg remote features %lx, CT features %d", rc->rmt_feats.feat_mask, rc->rmt_feats.ct_feat_flag);
         break;
     }
     default:

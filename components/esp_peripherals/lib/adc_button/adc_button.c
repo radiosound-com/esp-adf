@@ -141,11 +141,11 @@ static int get_adc_voltage(int channel)
     int tmp = 0;
     esp_adc_cal_characteristics_t characteristics;
 #if CONFIG_IDF_TARGET_ESP32
-    esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_11db, ADC_WIDTH_12Bit, V_REF, &characteristics);
+    esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_DB_11, ADC_WIDTH_BIT_12, V_REF, &characteristics);
 #elif CONFIG_IDF_TARGET_ESP32S2
-    esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_11db, ADC_WIDTH_BIT_13, 0, &characteristics);
+    esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_DB_11, ADC_WIDTH_BIT_13, 0, &characteristics);
 #else
-    esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_11db, ADC_WIDTH_12Bit, 0, &characteristics);
+    esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_DB_11, ADC_WIDTH_BIT_12, 0, &characteristics);
 #endif
     for (int i = 0; i < ADC_SAMPLES_NUM; ++i) {
         esp_adc_cal_get_voltage(channel, &characteristics, &data[i]);
@@ -280,13 +280,13 @@ static void button_task(void *parameters)
     while (find) {
         adc_arr_t *info = &(find->adc_info);
         reset_btn(find->btn_dscp, info->total_steps);
-        adc1_config_channel_atten(info->adc_ch, ADC_ATTEN_11db);
+        adc1_config_channel_atten(info->adc_ch, ADC_ATTEN_DB_11);
         find = find->next;
     }
     find = head;
 
 #if defined ENABLE_ADC_VOLUME
-    adc1_config_channel_atten(DIAL_adc_ch, ADC_ATTEN_11db);
+    adc1_config_channel_atten(DIAL_adc_ch, ADC_ATTEN_DB_11);
     short adc_vol_prev = ADC_BTN_INVALID_ID;
     short adc_vol_cur = ADC_BTN_INVALID_ID;
     short internal_time_ms = DIAL_VOL_INTERVAL_TIME_MS / ADC_SAMPLE_INTERVAL_TIME_MS; /// 10 * 10 = 100ms

@@ -75,7 +75,7 @@ static esp_err_t _tone_open(audio_element_handle_t self)
     }
 
     tone_partition_get_file_info(stream->tone_handle, file_index, &stream->cur_file);
-    ESP_LOGI(TAG, "Tone offset:%08x, Tone length:%d, pos:%d\n", stream->cur_file.song_adr, stream->cur_file.song_len, file_index);
+    ESP_LOGI(TAG, "Tone offset:%08lx, Tone length:%ld, pos:%d\n", stream->cur_file.song_adr, stream->cur_file.song_len, file_index);
     if (stream->cur_file.song_len <= 0) {
         ESP_LOGE(TAG, "Mayebe the flash tone is empty, please ensure the flash's contex");
         return ESP_FAIL;

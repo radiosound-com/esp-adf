@@ -1,4 +1,3 @@
-
 /*
    This example code is in the Public Domain (or CC0 licensed, at your option.)
 
@@ -75,7 +74,7 @@ void bt_app_a2d_data_cb(const uint8_t *data, uint32_t len)
 {
     write_ringbuf(data, len);
     if (++s_pkt_cnt % 100 == 0) {
-        ESP_LOGI(BT_AV_TAG, "Audio packet count %u", s_pkt_cnt);
+        ESP_LOGI(BT_AV_TAG, "Audio packet count %lu", s_pkt_cnt);
     }
 }
 
@@ -238,7 +237,7 @@ void bt_av_notify_evt_handler(uint8_t event_id, esp_avrc_rn_param_t *event_param
         bt_av_playback_changed();
         break;
     case ESP_AVRC_RN_PLAY_POS_CHANGED:
-        ESP_LOGI(BT_AV_TAG, "Play position changed: %d-ms", event_parameter->play_pos);
+        ESP_LOGI(BT_AV_TAG, "Play position changed: %lu-ms", event_parameter->play_pos);
         bt_av_play_pos_changed();
         break;
     }
@@ -278,7 +277,7 @@ static void bt_av_hdl_avrc_ct_evt(uint16_t event, void *p_param)
         break;
     }
     case ESP_AVRC_CT_REMOTE_FEATURES_EVT: {
-        ESP_LOGI(BT_RC_CT_TAG, "AVRC remote features %x, TG features %x", rc->rmt_feats.feat_mask, rc->rmt_feats.tg_feat_flag);
+        ESP_LOGI(BT_RC_CT_TAG, "AVRC remote features %lx, TG features %x", rc->rmt_feats.feat_mask, rc->rmt_feats.tg_feat_flag);
         break;
     }
     case ESP_AVRC_CT_GET_RN_CAPABILITIES_RSP_EVT: {
@@ -298,7 +297,7 @@ static void bt_av_hdl_avrc_ct_evt(uint16_t event, void *p_param)
 
 static void volume_set_by_controller(uint8_t volume)
 {
-    ESP_LOGI(BT_RC_TG_TAG, "Volume is set by remote controller %d%%\n", (uint32_t)volume * 100 / 0x7f);
+    ESP_LOGI(BT_RC_TG_TAG, "Volume is set by remote controller %lu%%\n", (uint32_t)volume * 100 / 0x7f);
     _lock_acquire(&s_volume_lock);
     s_volume = volume;
     _lock_release(&s_volume_lock);
@@ -310,7 +309,7 @@ static void volume_set_by_controller(uint8_t volume)
 
 static void volume_set_by_local_host(uint8_t volume)
 {
-    ESP_LOGI(BT_RC_TG_TAG, "Volume is set locally to: %d%%", (uint32_t)volume * 100 / 0x7f);
+    ESP_LOGI(BT_RC_TG_TAG, "Volume is set locally to: %lu%%", (uint32_t)volume * 100 / 0x7f);
     _lock_acquire(&s_volume_lock);
     s_volume = volume;
     _lock_release(&s_volume_lock);
@@ -363,7 +362,7 @@ static void bt_av_hdl_avrc_tg_evt(uint16_t event, void *p_param)
         break;
     }
     case ESP_AVRC_TG_REGISTER_NOTIFICATION_EVT: {
-        ESP_LOGI(BT_RC_TG_TAG, "AVRC register event notification: %d, param: 0x%x", rc->reg_ntf.event_id, rc->reg_ntf.event_parameter);
+        ESP_LOGI(BT_RC_TG_TAG, "AVRC register event notification: %d, param: 0x%lx", rc->reg_ntf.event_id, rc->reg_ntf.event_parameter);
         if (rc->reg_ntf.event_id == ESP_AVRC_RN_VOLUME_CHANGE) {
             s_volume_notify = true;
             esp_avrc_rn_param_t rn_param;
@@ -373,7 +372,7 @@ static void bt_av_hdl_avrc_tg_evt(uint16_t event, void *p_param)
         break;
     }
     case ESP_AVRC_TG_REMOTE_FEATURES_EVT: {
-        ESP_LOGI(BT_RC_TG_TAG, "AVRC remote features %x, CT features %x", rc->rmt_feats.feat_mask, rc->rmt_feats.ct_feat_flag);
+        ESP_LOGI(BT_RC_TG_TAG, "AVRC remote features %lx, CT features %x", rc->rmt_feats.feat_mask, rc->rmt_feats.ct_feat_flag);
         break;
     }
     default:

@@ -169,7 +169,7 @@ static void wifi_event_cb(void *arg, esp_event_base_t event_base,
                 break;
         }
     } else {
-        ESP_LOGW(TAG, "WiFi Event cb, Unhandle event_base:%s, event_id:%d", event_base, event_id);
+        ESP_LOGW(TAG, "WiFi Event cb, Unhandle event_base:%s, event_id:%ld", event_base, event_id);
     }
 }
 #else

@@ -42,10 +42,14 @@ list(APPEND COMPONENT_ADD_INCLUDEDIRS ./lib/touch)
 list(APPEND COMPONENT_SRCS ./periph_touch.c ./lib/touch/touch.c)
 ENDIF ()
 
-set(COMPONENT_REQUIRES driver audio_hal esp_adc_cal audio_sal fatfs console audio_pipeline audio_board spiffs display_service esp_dispatcher bt mbedtls wpa_supplicant)
+set(COMPONENT_REQUIRES driver audio_hal esp_adc audio_sal fatfs console audio_pipeline audio_board spiffs display_service esp_dispatcher bt mbedtls wpa_supplicant)
 
 IF (((IDF_VERSION_MAJOR EQUAL 4) AND (IDF_VERSION_MINOR GREATER 3)) OR (IDF_VERSION_MAJOR GREATER 4))
 list(APPEND COMPONENT_REQUIRES esp_lcd)
+ENDIF()
+
+IF (IDF_VERSION_MAJOR GREATER 4)
+list(APPEND COMPONENT_REQUIRES nvs_flash)
 ENDIF()
 
 register_component()

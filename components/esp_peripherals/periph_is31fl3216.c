@@ -189,7 +189,7 @@ static void is31fl3216_run_task(void *Para)
     uint16_t act_times = 0;
     while (task_run) {
         if (xQueueReceive(is31->evt, &msg, (wait_time_ms / portTICK_PERIOD_MS))) {
-            ESP_LOGD(TAG, "cmd:%d, data:%d", msg.type, msg.data);
+            ESP_LOGD(TAG, "cmd:%u, data:%lu", msg.type, msg.data);
             switch (msg.type) {
                 case PERIPH_IS31_CMD_CHG_STATE:
                     memcpy(&is31_arg, is31->arg, sizeof(periph_is31_arg_t));

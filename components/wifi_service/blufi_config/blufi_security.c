@@ -23,7 +23,7 @@
  */
 
 #include "sdkconfig.h"
-#ifdef CONFIG_BLUEDROID_ENABLED
+#ifdef CONFIG_BT_BLE_BLUFI_ENABLE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
