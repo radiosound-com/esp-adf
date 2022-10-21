@@ -31,7 +31,9 @@
 
 #include "esp_peripherals.h"
 #include "periph_wifi.h"
+#if CONFIG_BT_BLE_BLUFI_ENABLE
 #include "wifibleconfig.h"
+#endif
 #include "audio_mem.h"
 
 #if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(4, 4, 0))
@@ -91,7 +93,7 @@ esp_err_t periph_wifi_wait_for_connected(esp_periph_handle_t periph, TickType_t 
     if (connected_bit & CONNECTED_BIT) {
         return ESP_OK;
     }
-#ifdef CONFIG_BLUEDROID_ENABLED
+#ifdef CONFIG_BT_BLE_BLUFI_ENABLE
     if (periph_wifi->config_mode == WIFI_CONFIG_BLUEFI) {
         ble_config_stop();
     }
@@ -260,7 +262,7 @@ esp_err_t periph_wifi_config_start(esp_periph_handle_t periph, periph_wifi_confi
         //todo : add wps
         return ESP_OK;
     } else if (mode == WIFI_CONFIG_BLUEFI) {
-#ifdef CONFIG_BLUEDROID_ENABLED
+#ifdef CONFIG_BT_BLE_BLUFI_ENABLE
         ble_config_start(periph);
 #endif
         return ESP_OK;
