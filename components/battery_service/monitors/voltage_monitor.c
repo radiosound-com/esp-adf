@@ -28,6 +28,7 @@
 #include "freertos/semphr.h"
 
 #include "esp_log.h"
+#include "esp_timer.h"
 
 #include "audio_error.h"
 #include "audio_mem.h"

@@ -26,6 +26,7 @@
 #include "tts_stream.h"
 #include "audio_mem.h"
 #include "esp_log.h"
+#include "spi_flash_mmap.h"
 #include "esp_partition.h"
 #include "esp_tts_voice_template.h"
 

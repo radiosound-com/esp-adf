@@ -208,6 +208,9 @@ static void gap_event_handler(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param
 
 static void example_prepare_write_event_env(esp_gatt_if_t gatts_if, prepare_type_env_t *prepare_write_env, esp_ble_gatts_cb_param_t *param)
 {
+    if (prepare_write_env == NULL)
+        return;
+
     ESP_LOGI(TAG, "prepare write, handle = %d, value len = %d", param->write.handle, param->write.len);
     esp_gatt_status_t status = ESP_GATT_OK;
     if (prepare_write_env->prepare_buf == NULL) {
@@ -268,6 +271,8 @@ static void example_exec_write_event_env(prepare_type_env_t *prepare_write_env, 
 static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t *param)
 {
     prepare_type_env_t prepare_write_env;
+    prepare_write_env.prepare_buf = NULL;
+    prepare_write_env.prepare_len = 0;
     switch (event) {
         case ESP_GATTS_REG_EVT:
             esp_ble_gap_set_rand_addr(rand_addr);

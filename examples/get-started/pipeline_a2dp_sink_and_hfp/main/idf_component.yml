@@ -1,0 +1,7 @@
+## IDF Component Manager Manifest File
+dependencies:
+  espressif/jsmn: "==1.0.0"
+  espressif/nghttp: "==1.41.0"
+  idf: ">=5.0.0"
+
+# see component manager readme: https://github.com/espressif/idf-component-manager

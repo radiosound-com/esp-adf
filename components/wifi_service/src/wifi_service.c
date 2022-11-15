@@ -40,6 +40,7 @@
 #include "esp_event.h"
 #include "esp_action_def.h"
 #include "esp_delegate.h"
+#include "esp_timer.h"
 
 #if __has_include("esp_idf_version.h")
 #include "esp_idf_version.h"

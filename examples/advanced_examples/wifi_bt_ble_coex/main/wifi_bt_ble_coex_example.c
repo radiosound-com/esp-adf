@@ -30,7 +30,7 @@
 #include "mp3_decoder.h"
 #include "pcm_decoder.h"
 #include "wifi_service.h"
-#include "blufi_config.h"
+//#include "blufi_config.h"
 #include "input_key_service.h"
 #include "ble_gatts_module.h"
 
@@ -182,7 +182,7 @@ static esp_err_t input_key_service_cb(periph_service_handle_t handle, periph_ser
             case INPUT_KEY_USER_ID_SET:
                 ESP_LOGI(TAG, "[ * ] [Set] Setting Wi-Fi");
                 ble_gatts_module_start_adv();
-                blufi_set_sta_connected_flag(wifi_setting_handle, false);
+                //blufi_set_sta_connected_flag(wifi_setting_handle, false);
                 wifi_service_setting_start(wifi_serv, 0);
                 break;
             default:
@@ -223,9 +223,9 @@ static void wifi_server_init(void)
     wifi_serv = wifi_service_create(&cfg);
 
     int reg_idx = 0;
-    wifi_setting_handle = blufi_config_create(NULL);
-    esp_wifi_setting_regitster_notify_handle(wifi_setting_handle, (void *)wifi_serv);
-    wifi_service_register_setting_handle(wifi_serv, wifi_setting_handle, &reg_idx);
+    //wifi_setting_handle = blufi_config_create(NULL);
+    //esp_wifi_setting_regitster_notify_handle(wifi_setting_handle, (void *)wifi_serv);
+    //wifi_service_register_setting_handle(wifi_serv, wifi_setting_handle, &reg_idx);
     wifi_service_set_sta_info(wifi_serv, &sta_cfg);
     wifi_service_connect(wifi_serv);
 }
