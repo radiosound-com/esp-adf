@@ -56,6 +56,7 @@ typedef struct {
     char *label;
     char *uri;
     char *cert_pem;
+    esp_err_t (*crt_bundle_attach)(void *conf);
 } ota_node_attr_t;
 
 typedef enum {
