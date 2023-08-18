@@ -237,9 +237,11 @@ static void user_a2dp_sink_cb(esp_a2d_cb_event_t event, esp_a2d_cb_param_t *para
         case ESP_A2D_CONNECTION_STATE_EVT:
             if (param->conn_stat.state == ESP_A2D_CONNECTION_STATE_DISCONNECTED) {
                 ESP_LOGI(TAG, "A2DP disconnected");
+                esp_bt_gap_set_scan_mode(ESP_BT_CONNECTABLE, ESP_BT_GENERAL_DISCOVERABLE);
                 g_a2dp_connect_state = false;
             } else if (param->conn_stat.state == ESP_A2D_CONNECTION_STATE_CONNECTED) {
                 ESP_LOGI(TAG, "A2DP connected");
+                esp_bt_gap_set_scan_mode(ESP_BT_NON_CONNECTABLE, ESP_BT_NON_DISCOVERABLE);
                 g_a2dp_connect_state = true;
             }
             break;
