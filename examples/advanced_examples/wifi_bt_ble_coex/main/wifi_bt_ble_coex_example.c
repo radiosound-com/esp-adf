@@ -356,8 +356,8 @@ void app_main(void)
     tcpip_adapter_init();
 #endif
 
-    esp_log_level_set("*", ESP_LOG_WARN);
-    esp_log_level_set(TAG, ESP_LOG_DEBUG);
+    //esp_log_level_set("*", ESP_LOG_WARN);
+    //esp_log_level_set(TAG, ESP_LOG_DEBUG);
     
     ESP_LOGI(TAG, "[ 1 ] Create coex handle for a2dp-gatt-wifi");
     g_coex_handle = (coex_handle_t *)audio_malloc(sizeof(coex_handle_t));
