@@ -237,9 +237,11 @@ static void user_a2dp_sink_cb(esp_a2d_cb_event_t event, esp_a2d_cb_param_t *para
         case ESP_A2D_CONNECTION_STATE_EVT:
             if (param->conn_stat.state == ESP_A2D_CONNECTION_STATE_DISCONNECTED) {
                 ESP_LOGI(TAG, "A2DP disconnected");
+                esp_bt_gap_set_scan_mode(ESP_BT_CONNECTABLE, ESP_BT_GENERAL_DISCOVERABLE);
                 g_a2dp_connect_state = false;
             } else if (param->conn_stat.state == ESP_A2D_CONNECTION_STATE_CONNECTED) {
                 ESP_LOGI(TAG, "A2DP connected");
+                esp_bt_gap_set_scan_mode(ESP_BT_NON_CONNECTABLE, ESP_BT_NON_DISCOVERABLE);
                 g_a2dp_connect_state = true;
             }
             break;
@@ -354,8 +356,8 @@ void app_main(void)
     tcpip_adapter_init();
 #endif
 
-    esp_log_level_set("*", ESP_LOG_WARN);
-    esp_log_level_set(TAG, ESP_LOG_DEBUG);
+    //esp_log_level_set("*", ESP_LOG_WARN);
+    //esp_log_level_set(TAG, ESP_LOG_DEBUG);
     
     ESP_LOGI(TAG, "[ 1 ] Create coex handle for a2dp-gatt-wifi");
     g_coex_handle = (coex_handle_t *)audio_malloc(sizeof(coex_handle_t));
@@ -372,7 +374,7 @@ void app_main(void)
     input_key_service_info_t input_key_info[] = INPUT_KEY_DEFAULT_INFO();
     input_key_service_cfg_t input_cfg = INPUT_KEY_SERVICE_DEFAULT_CONFIG();
     input_cfg.handle = g_coex_handle->set;
-    input_cfg.based_cfg.task_stack = 2048;
+    input_cfg.based_cfg.task_stack = 3072;
     input_cfg.based_cfg.extern_stack = true;
     periph_service_handle_t input_ser = input_key_service_create(&input_cfg);
     input_key_service_add_key(input_ser, input_key_info, INPUT_KEY_NUM);
