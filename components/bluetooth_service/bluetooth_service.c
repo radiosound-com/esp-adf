@@ -178,6 +178,11 @@ static void bt_a2d_sink_cb(esp_a2d_cb_event_t event, esp_a2d_cb_param_t *p_param
 
             if (g_bt_service->connection_state == ESP_A2D_CONNECTION_STATE_DISCONNECTED
                 && a2d->conn_stat.state == ESP_A2D_CONNECTION_STATE_CONNECTED) {
+#if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(4, 0, 0))
+                esp_bt_gap_set_scan_mode(ESP_BT_NON_CONNECTABLE, ESP_BT_NON_DISCOVERABLE);
+#else
+                esp_bt_gap_set_scan_mode(ESP_BT_SCAN_MODE_NONE);
+#endif
                 memcpy(&g_bt_service->remote_bda, &a2d->conn_stat.remote_bda, sizeof(esp_bd_addr_t));
                 g_bt_service->connection_state = a2d->conn_stat.state;
                 ESP_LOGD(TAG, "A2DP connection state = CONNECTED");
@@ -188,6 +193,11 @@ static void bt_a2d_sink_cb(esp_a2d_cb_event_t event, esp_a2d_cb_param_t *p_param
             if (memcmp(&g_bt_service->remote_bda, &a2d->conn_stat.remote_bda, sizeof(esp_bd_addr_t)) == 0
                 && g_bt_service->connection_state == ESP_A2D_CONNECTION_STATE_CONNECTED
                 && a2d->conn_stat.state == ESP_A2D_CONNECTION_STATE_DISCONNECTED) {
+#if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(4, 0, 0))
+                esp_bt_gap_set_scan_mode(ESP_BT_CONNECTABLE, ESP_BT_GENERAL_DISCOVERABLE);
+#else
+                esp_bt_gap_set_scan_mode(ESP_BT_SCAN_MODE_CONNECTABLE_DISCOVERABLE);
+#endif
                 memset(&g_bt_service->remote_bda, 0, sizeof(esp_bd_addr_t));
                 g_bt_service->connection_state = ESP_A2D_CONNECTION_STATE_DISCONNECTED;
                 ESP_LOGD(TAG, "A2DP connection state =  DISCONNECTED");
