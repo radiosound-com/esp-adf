@@ -373,8 +373,9 @@ void app_main(void)
         err = nvs_flash_init();
     }
 
-    esp_log_level_set("*", ESP_LOG_INFO);
-    esp_log_level_set(TAG, ESP_LOG_DEBUG);
+    //esp_log_level_set("*", ESP_LOG_INFO);
+    //esp_log_level_set(TAG, ESP_LOG_DEBUG);
+    //esp_log_level_set("i2s(legacy)", ESP_LOG_INFO);
 
     ESP_LOGI(TAG, "[ 1 ] Create Bluetooth service");
     bluetooth_service_cfg_t bt_cfg = {
@@ -529,7 +530,7 @@ void app_main(void)
             && msg.source == (void *)bt_periph) {
             if (msg.cmd == PERIPH_BLUETOOTH_DISCONNECTED) {
                 ESP_LOGW(TAG, "[ * ] Bluetooth disconnected");
-                break;
+                //break;
             }
         }
         /* Stop when the last pipeline element (i2s_stream_writer in this case) receives stop event */
