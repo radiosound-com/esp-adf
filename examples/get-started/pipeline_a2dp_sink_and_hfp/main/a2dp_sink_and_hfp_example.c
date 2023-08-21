@@ -375,7 +375,7 @@ void app_main(void)
 
     //esp_log_level_set("*", ESP_LOG_INFO);
     //esp_log_level_set(TAG, ESP_LOG_DEBUG);
-    //esp_log_level_set("i2s(legacy)", ESP_LOG_INFO);
+    esp_log_level_set("i2s(legacy)", ESP_LOG_INFO);
 
     ESP_LOGI(TAG, "[ 1 ] Create Bluetooth service");
     bluetooth_service_cfg_t bt_cfg = {
