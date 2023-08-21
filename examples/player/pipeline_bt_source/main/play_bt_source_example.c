@@ -9,6 +9,7 @@
 #include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "esp_crt_bundle.h"
 #include "esp_log.h"
 #include "esp_wifi.h"
 #include "nvs_flash.h"
@@ -68,6 +69,7 @@ void app_main(void)
 
     ESP_LOGI(TAG, "[ 2 ] Create http stream to read data");
     http_stream_cfg_t http_cfg = HTTP_STREAM_CFG_DEFAULT();
+    http_cfg.crt_bundle_attach = esp_crt_bundle_attach;
     http_stream_reader = http_stream_init(&http_cfg);
 
     ESP_LOGI(TAG, "[ 3 ] Create mp3 decoder to decode mp3 file");
