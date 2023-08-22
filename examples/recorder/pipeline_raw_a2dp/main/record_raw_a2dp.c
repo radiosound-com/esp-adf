@@ -29,10 +29,8 @@
 #include "input_key_service.h"
 #include "audio_idf_version.h"
 
-#if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(4, 1, 0))
-#include "esp_netif.h"
-#else
-#include "tcpip_adapter.h"
+#if CONFIG_ESP_LYRAT_V4_3_BOARD
+#include "es8388.h"
 #endif
 
 static const char *TAG = "REC_RAW_A2DP";
@@ -82,6 +80,13 @@ void app_main(void)
     ESP_LOGI(TAG, "[ 2 ] Start codec chip");
     audio_board_handle_t board_handle = audio_board_init();
     audio_hal_ctrl_codec(board_handle->audio_hal, AUDIO_HAL_CODEC_MODE_LINE_IN, AUDIO_HAL_CTRL_START);
+#if CONFIG_ESP_LYRAT_V4_3_BOARD
+    ESP_LOGI(TAG, "[2.1] Selecting line in");
+    es8388_write_reg(39, 144); // left DAC to left mixer enable
+    es8388_write_reg(42, 144); // right DAC to right mixer enable
+    es8388_write_reg(10, 80); // set LINE2 as input to ADC
+    es8388_write_reg(43, 128); // DACLRC and ADCLRC same
+#endif
 
     ESP_LOGI(TAG, "[3.0] Create audio pipeline for recording");
     audio_pipeline_cfg_t pipeline_cfg = DEFAULT_AUDIO_PIPELINE_CONFIG();
