@@ -334,4 +334,5 @@ void app_main(void)
     esp_bt_controller_disable();
     esp_bt_controller_deinit();
     esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT);
+    esp_restart();
 }
