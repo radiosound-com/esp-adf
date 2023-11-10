@@ -61,7 +61,7 @@ typedef struct {
 /**
  * a2dp task is only created in a2dp sink mode
  */
-#define A2DP_STREAM_TASK_STACK          ( 2 * 1024 )
+#define A2DP_STREAM_TASK_STACK          ( 2560 )
 #define A2DP_STREAM_TASK_CORE           ( 0 )
 #define A2DP_STREAM_TASK_PRIO           ( 22 )
 #define A2DP_STREAM_TASK_IN_EXT         ( true )
