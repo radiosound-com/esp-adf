@@ -123,6 +123,12 @@ static void bt_a2d_sink_cb(esp_a2d_cb_event_t event, esp_a2d_cb_param_t *param)
                      bda[0], bda[1], bda[2], bda[3], bda[4], bda[5]);
             if (param->conn_stat.state == ESP_A2D_CONNECTION_STATE_DISCONNECTED) {
                 ESP_LOGI(TAG, "A2DP connection state =  DISCONNECTED");
+#if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(4, 0, 0))
+                esp_bt_gap_set_scan_mode(ESP_BT_CONNECTABLE, ESP_BT_GENERAL_DISCOVERABLE);
+#else
+                esp_bt_gap_set_scan_mode(ESP_BT_SCAN_MODE_CONNECTABLE_DISCOVERABLE);
+#endif
+
                 memset(s_aadp_handler.connected_bd_addr, 0x00, ESP_BD_ADDR_LEN);
                 if (s_aadp_handler.sink_stream) {
                     audio_element_report_status(s_aadp_handler.sink_stream, AEL_STATUS_INPUT_DONE);
@@ -132,6 +138,11 @@ static void bt_a2d_sink_cb(esp_a2d_cb_event_t event, esp_a2d_cb_param_t *param)
                 }
             } else if (param->conn_stat.state == ESP_A2D_CONNECTION_STATE_CONNECTED) {
                 ESP_LOGI(TAG, "A2DP connection state =  CONNECTED");
+#if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(4, 0, 0))
+                esp_bt_gap_set_scan_mode(ESP_BT_NON_CONNECTABLE, ESP_BT_NON_DISCOVERABLE);
+#else
+                esp_bt_gap_set_scan_mode(ESP_BT_SCAN_MODE_NONE);
+#endif
                 memcpy(s_aadp_handler.connected_bd_addr, bda, ESP_BD_ADDR_LEN);
                 if (s_aadp_handler.bt_avrc_periph) {
                     esp_periph_send_event(s_aadp_handler.bt_avrc_periph, PERIPH_BLUETOOTH_CONNECTED, NULL, 0);
