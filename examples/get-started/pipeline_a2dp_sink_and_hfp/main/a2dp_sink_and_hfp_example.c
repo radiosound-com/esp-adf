@@ -51,6 +51,7 @@ static const char *BT_HF_TAG = "BT_HF";
 static audio_element_handle_t  raw_read, bt_stream_reader, i2s_stream_writer, i2s_stream_reader;
 static audio_pipeline_handle_t pipeline_d, pipeline_e;
 static bool is_get_hfp = true;
+static bool a2dp_connected = false;
 
 const char *c_hf_evt_str[] = {
     "CONNECTION_STATE_EVT",              /*!< connection state changed event */
@@ -363,6 +364,20 @@ void bt_hf_client_cb(esp_hf_client_cb_event_t event, esp_hf_client_cb_param_t *p
     }
 }
 
+void bt_task(void *param)
+{
+    static const esp_bd_addr_t my_device = {0xc4, 0xc1, 0x7d, 0x38, 0x46, 0x59};
+
+    while (xTaskGetTickCount() < 60000 && !a2dp_connected)
+    {
+        ESP_LOGI(TAG, "[ * ] Connect to my device");
+        ESP_ERROR_CHECK_WITHOUT_ABORT(esp_a2d_sink_connect(my_device));
+        vTaskDelay(pdMS_TO_TICKS(5000));
+    }
+
+    vTaskDelete(NULL);
+}
+
 void app_main(void)
 {
     esp_err_t err = nvs_flash_init();
@@ -477,6 +492,8 @@ void app_main(void)
     audio_pipeline_run(pipeline_d);
     audio_pipeline_run(pipeline_e);
 
+    xTaskCreate(bt_task, "connect", 3072, NULL, tskIDLE_PRIORITY, NULL);
+
     ESP_LOGI(TAG, "[ 7 ] Listen for all pipeline events");
     while (1) {
         audio_event_iface_msg_t msg;
@@ -484,6 +501,18 @@ void app_main(void)
         if (ret != ESP_OK) {
             ESP_LOGE(TAG, "[ * ] Event interface error : %d", ret);
             continue;
+        }
+
+        if (msg.cmd == PERIPH_BLUETOOTH_DISCONNECTED)
+        {
+            ESP_LOGW(TAG, "[*] A2DP disconnected");
+            a2dp_connected = false;
+        }
+
+        if (msg.cmd == PERIPH_BLUETOOTH_CONNECTED)
+        {
+            ESP_LOGW(TAG, "[*] A2DP connected");
+            a2dp_connected = true;
         }
 
         if (msg.source_type == AUDIO_ELEMENT_TYPE_ELEMENT && msg.source == (void *) bt_stream_reader
