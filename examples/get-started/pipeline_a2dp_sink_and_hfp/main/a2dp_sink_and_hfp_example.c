@@ -368,6 +368,8 @@ void bt_task(void *param)
 {
     static const esp_bd_addr_t my_device = {0xc4, 0xc1, 0x7d, 0x38, 0x46, 0x59};
 
+    vTaskDelay(pdMS_TO_TICKS(5000));
+
     while (xTaskGetTickCount() < 60000 && !a2dp_connected)
     {
         ESP_LOGI(TAG, "[ * ] Connect to my device");
@@ -558,7 +560,7 @@ void app_main(void)
             && msg.source == (void *)bt_periph) {
             if (msg.cmd == PERIPH_BLUETOOTH_DISCONNECTED) {
                 ESP_LOGW(TAG, "[ * ] Bluetooth disconnected");
-                break;
+                //break;
             }
         }
         /* Stop when the last pipeline element (i2s_stream_writer in this case) receives stop event */
