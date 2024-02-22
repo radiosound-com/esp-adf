@@ -537,11 +537,11 @@ static void bt_a2d_source_cb(esp_a2d_cb_event_t event, esp_a2d_cb_param_t *param
             if (param->conn_stat.state == ESP_A2D_CONNECTION_STATE_CONNECTED) {
                 ESP_LOGI(TAG, "a2dp connected");
                 g_bt_service->source_a2d_state = BT_SOURCE_STATE_CONNECTED;
-#if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(4, 0, 0))
-                esp_bt_gap_set_scan_mode(ESP_BT_NON_CONNECTABLE, ESP_BT_NON_DISCOVERABLE);
-#else
-                esp_bt_gap_set_scan_mode(ESP_BT_SCAN_MODE_NONE);
-#endif
+//#if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(4, 0, 0))
+//                esp_bt_gap_set_scan_mode(ESP_BT_NON_CONNECTABLE, ESP_BT_NON_DISCOVERABLE);
+//#else
+//                esp_bt_gap_set_scan_mode(ESP_BT_SCAN_MODE_NONE);
+//#endif
                 if (g_bt_service->periph) {
                     esp_periph_send_event(g_bt_service->periph, PERIPH_BLUETOOTH_CONNECTED, NULL, 0);
                 }
