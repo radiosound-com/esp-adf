@@ -49,7 +49,7 @@ audio_hal_func_t AUDIO_CODEC_PCM1681_DEFAULT_HANDLE = {
     .handle = NULL,
 };
 
-static esp_err_t pcm1681_write_reg(uint8_t reg_add, uint8_t data)
+esp_err_t pcm1681_write_reg(uint8_t reg_add, uint8_t data)
 {
     int retries = 0;
     esp_err_t result;
@@ -65,7 +65,7 @@ static esp_err_t pcm1681_write_reg(uint8_t reg_add, uint8_t data)
     return result;
 }
 
-static esp_err_t pcm1681_read_reg(uint8_t reg_add, uint8_t* p_data)
+esp_err_t pcm1681_read_reg(uint8_t reg_add, uint8_t* p_data)
 {
     return i2c_bus_read_bytes(i2c_handle, PCM1681_ADDR, &reg_add, sizeof(reg_add), p_data, 1);
 }

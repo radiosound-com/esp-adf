@@ -29,6 +29,10 @@ extern "C"
      */
     esp_err_t pcm1681_deinit(void);
 
+    esp_err_t pcm1681_write_reg(uint8_t reg_add, uint8_t data);
+
+    esp_err_t pcm1681_read_reg(uint8_t reg_add, uint8_t* p_data);
+
     esp_err_t pcm1681_ctrl(audio_hal_codec_mode_t mode, audio_hal_ctrl_t ctrl_state);
     esp_err_t pcm1681_config_iface(audio_hal_codec_mode_t mode, audio_hal_codec_i2s_iface_t* iface);
 
