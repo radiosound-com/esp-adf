@@ -21,6 +21,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
+#include "sdkconfig.h"
+#ifndef CONFIG_IDF_TARGET_ESP32P4
 #include <string.h>
 #include <inttypes.h>
 #include "freertos/FreeRTOS.h"
@@ -747,3 +749,4 @@ esp_err_t pwm_stream_set_clk(audio_element_handle_t pwm_stream, int rate, int bi
     res |= audio_pwm_start();
     return res;
 }
+#endif

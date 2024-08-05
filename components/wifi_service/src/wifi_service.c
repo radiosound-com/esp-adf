@@ -21,6 +21,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
+#include "soc/soc_caps.h"
+#if SOC_WIFI_SUPPORTED
 
 #include <stdarg.h>
 #include <string.h>
@@ -687,3 +689,4 @@ periph_service_handle_t wifi_service_create(wifi_service_config_t *config)
     return wifi;
 }
 
+#endif

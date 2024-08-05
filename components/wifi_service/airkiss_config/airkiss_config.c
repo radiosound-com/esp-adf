@@ -22,6 +22,9 @@
  *
  */
 
+#include "soc/soc_caps.h"
+#if SOC_WIFI_SUPPORTED
+
 #include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -583,3 +586,4 @@ esp_wifi_setting_handle_t airkiss_config_create(airkiss_config_info_t *info)
     esp_wifi_setting_register_function(air_setting_handle, airkiss_start, airkiss_stop, airkiss_teardown);
     return air_setting_handle;
 }
+#endif

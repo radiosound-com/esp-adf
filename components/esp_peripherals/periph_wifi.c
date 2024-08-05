@@ -21,7 +21,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-
+#include "soc/soc_caps.h"
+#if SOC_WIFI_SUPPORTED
 #include <string.h>
 #include "esp_wpa2.h"
 #include "esp_event.h"
@@ -519,3 +520,4 @@ _periph_wifi_init_failed:
     }
     return NULL;
 }
+#endif
