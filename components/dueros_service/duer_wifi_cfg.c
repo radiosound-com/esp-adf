@@ -126,7 +126,7 @@ static duer_ble_wifi_cfg_callbacks_t host_cb = {
 };
 
 static duer_dipb_data_handler_callbacks_t dipb_cbs = {
-    .ble_send_data = duer_ble_send_data,
+    .ble_send_data = (int (*)(uint8_t *, size_t, uint16_t))duer_ble_send_data,
     .scan_wifi = scan_wifi,
     .handle_wifi_info = wifi_info,
     .get_profile_value = get_profile_value,
