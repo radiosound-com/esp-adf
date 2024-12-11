@@ -30,7 +30,8 @@ list(APPEND COMPONENT_SRCS ./esp_peripherals.c
                 ./lib/tca9554/tca9554.c
                 ./lib/gpio_isr/gpio_isr.c)
 
-if("${IDF_VERSION_MAJOR}.${IDF_VERSION_MINOR}" VERSION_LESS "5.3")
+# https://github.com/espressif/esp-adf/issues/1278#issuecomment-2444852190
+if(true)
     list(APPEND COMPONENT_SRCS  ./driver/i2c_bus/i2c_bus.c)
 else()
     list(APPEND COMPONENT_SRCS  ./driver/i2c_bus/i2c_bus_v2.c)
