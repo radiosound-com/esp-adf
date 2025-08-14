@@ -1,3 +1,8 @@
+if( NOT CONFIG_ESP_WIFI_ENABLED
+    AND NOT CONFIG_ESP_HOST_WIFI_ENABLED )
+    return()
+endif()
+
 set(idf_version "${IDF_VERSION_MAJOR}.${IDF_VERSION_MINOR}")
 
 set(COMPONENT_ADD_INCLUDEDIRS include)

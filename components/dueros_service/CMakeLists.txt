@@ -1,3 +1,8 @@
+if( NOT CONFIG_ESP_WIFI_ENABLED
+    AND NOT CONFIG_ESP_HOST_WIFI_ENABLED )
+    return()
+endif()
+
 set(COMPONENT_ADD_INCLUDEDIRS include)
 
 # Edit following two lines to set component requirements (see docs)
